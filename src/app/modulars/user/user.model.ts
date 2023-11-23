@@ -71,9 +71,14 @@ const userSchema = new mongoose.Schema<IUser, UserModel, IUserMethods>({
 })
 
 // instance methods for check user existence
-userSchema.methods.isUserExist = async function (userName: string) {
+userSchema.methods.isUserExists = async function (userName: string) {
   return await User.findOne({ username: userName })
 }
+
+// static methods for check user existence
+userSchema.static('createIsUserExists', async function (userName: string) {
+  return await User.findOne({ username: userName })
+})
 
 // remove password in response
 userSchema.methods.toJSON = function () {

@@ -1,4 +1,5 @@
-import { Model } from 'mongoose'
+/* eslint-disable no-unused-vars */
+import { HydratedDocument, Model } from 'mongoose'
 
 export interface IFullName {
   firstName: string
@@ -27,14 +28,20 @@ export interface IUser {
   isActive: boolean
   hobbies: Array<string>
   address: IAddress
-  orders: Array<IOrder>
+  orders?: Array<IOrder>
 }
 
 // instance methods interface
 export interface IUserMethods {
-  // eslint-disable-next-line no-unused-vars
-  isUserExist(userName: string): Promise<IUser | null>
+  isUserExists(userName: string): Promise<IUser | null>
 }
 
 // user model
-export type UserModel = Model<IUser, Record<string, never>, IUserMethods>
+// export type UserModel = Model<IUser, Record<string, never>, IUserMethods>
+
+export interface UserModel
+  extends Model<IUser, Record<string, never>, IUserMethods> {
+  createIsUserExists(
+    userId: number,
+  ): Promise<HydratedDocument<IUser, IUserMethods>>
+}
