@@ -15,12 +15,22 @@ const createUser = async (userData: IUser): Promise<IUser> => {
 
 // get all users from the database
 const getAllUsers = async (): Promise<IUser[]> => {
-  return await User.find()
+  return await User.find().select({
+    username: 1,
+    'fullName.firstName': 1,
+    'fullName.lastName': 1,
+    age: 1,
+    email: 1,
+    'address.street': 1,
+    'address.city': 1,
+    'address.country': 1,
+    _id: 0,
+  })
 }
 
 // get a user from the database
 const getUser = async (userId: number): Promise<IUser | null> => {
-  return await User.findOne({ userId })
+  return await User.createIsUserExists(userId)
 }
 
 // update a user
@@ -28,11 +38,17 @@ const updateUser = async (
   userId: number,
   updateData: Partial<IUser>,
 ): Promise<IUser | null> => {
+  const isUserExist = await User.createIsUserExists(userId)
+  if (!isUserExist) return null
+
   return await User.findOneAndUpdate({ userId }, updateData, { new: true })
 }
 
 // delete a user from the database
 const deleteUser = async (userId: number): Promise<IUser | null> => {
+  const isUserExist = await User.createIsUserExists(userId)
+  if (!isUserExist) return null
+
   return await User.findOneAndDelete({ userId })
 }
 
@@ -41,6 +57,10 @@ const addOrder = async (
   userId: number,
   orderData: IOrder[] | IOrder,
 ): Promise<IUser | null> => {
+  // find user first
+  const isUserExist = await User.createIsUserExists(userId)
+  if (!isUserExist) return null
+
   return await User.findOneAndUpdate(
     { userId },
     { $addToSet: { orders: { $each: [orderData] } } },
@@ -52,6 +72,9 @@ const addOrder = async (
 const getAllOrders = async (
   userId: number,
 ): Promise<{ orders: IOrder[] } | null> => {
+  const isUserExist = await User.createIsUserExists(userId)
+  if (!isUserExist) return null
+
   const result = await User.findOne({ userId }).select({ orders: 1, _id: 0 })
   const orders = result?.orders || []
 

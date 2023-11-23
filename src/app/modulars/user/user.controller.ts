@@ -1,6 +1,7 @@
 import { IUser } from './user.interface'
 import { Request, Response } from 'express'
 import {
+  orderValidationSchema,
   partialUserValidationSchema,
   userValidationSchema,
 } from './user.validation'
@@ -13,6 +14,7 @@ const createUser = async (req: Request, res: Response) => {
   try {
     const userData = req.body
 
+    //validate the user data
     const validatedData = userValidationSchema.parse(userData)
 
     const result = await userServices.createUser(validatedData)
@@ -21,7 +23,7 @@ const createUser = async (req: Request, res: Response) => {
       return res.status(500).json({
         success: false,
         message: 'User creation failed',
-        data: result,
+        error: result,
       })
     }
 
@@ -36,7 +38,7 @@ const createUser = async (req: Request, res: Response) => {
     res.status(500).json({
       success: false,
       message: error.message || 'something went wrong',
-      error: error,
+      error,
     })
   }
 }
@@ -49,10 +51,13 @@ const getAllUsers = async (req: Request, res: Response) => {
     const users = await userServices.getAllUsers()
 
     if (!users || users?.length <= 0) {
-      return res.status(500).json({
+      return res.status(404).json({
         success: false,
-        message: 'No users found',
-        data: null,
+        message: 'Users not found',
+        error: {
+          code: 404,
+          description: 'Users not found!',
+        },
       })
     }
 
@@ -65,7 +70,7 @@ const getAllUsers = async (req: Request, res: Response) => {
     res.status(500).json({
       success: false,
       message: 'Something is wrong to found users',
-      data: null,
+      error,
     })
   }
 }
@@ -78,10 +83,13 @@ const getUser = async (req: Request, res: Response) => {
     const user = await userServices.getUser(Number(req.params.userId))
 
     if (!user) {
-      return res.status(500).json({
+      return res.status(404).json({
         success: false,
         message: 'User not found',
-        data: null,
+        error: {
+          code: 404,
+          description: 'User not found!',
+        },
       })
     }
 
@@ -94,7 +102,7 @@ const getUser = async (req: Request, res: Response) => {
     res.status(500).json({
       success: false,
       message: 'Something is wrong to found user',
-      data: null,
+      error,
     })
   }
 }
@@ -106,6 +114,7 @@ const updateUser = async (req: Request, res: Response) => {
   try {
     const userData: Partial<IUser> = req.body
 
+    // validate user data
     const validatedData: Partial<IUser> =
       partialUserValidationSchema.parse(userData)
 
@@ -115,10 +124,13 @@ const updateUser = async (req: Request, res: Response) => {
     )
 
     if (!updatedResult) {
-      return res.status(500).json({
+      return res.status(404).json({
         success: false,
         message: 'User not found',
-        data: null,
+        error: {
+          code: 404,
+          description: 'User not found!',
+        },
       })
     }
 
@@ -131,7 +143,7 @@ const updateUser = async (req: Request, res: Response) => {
     res.status(500).json({
       success: false,
       message: 'Something is wrong to update user information',
-      data: error,
+      error,
     })
   }
 }
@@ -146,23 +158,26 @@ const deleteUser = async (req: Request, res: Response) => {
     )
 
     if (!deletedResult) {
-      return res.status(500).json({
+      return res.status(404).json({
         success: false,
-        message: 'User not deleted or not found',
-        data: null,
+        message: 'User not found',
+        error: {
+          code: 404,
+          description: 'User not found!',
+        },
       })
     }
 
     res.status(200).json({
       success: true,
-      message: 'User delete successfully',
+      message: 'User deleted successfully!',
       data: null,
     })
   } catch (error) {
     res.status(500).json({
       success: false,
       message: 'Something is wrong to delete a user',
-      data: error,
+      error,
     })
   }
 }
@@ -175,29 +190,37 @@ const deleteUser = async (req: Request, res: Response) => {
 const addOrder = async (req: Request, res: Response) => {
   try {
     const orderData = req.body
+
+    // validate order data
+    const validatedData = orderValidationSchema.parse(orderData)
+
+    //result
     const addedResult = await userServices.addOrder(
       Number(req.params.userId),
-      orderData,
+      validatedData,
     )
 
     if (!addedResult) {
-      return res.status(500).json({
+      return res.status(404).json({
         success: false,
         message: 'User not found',
-        data: null,
+        error: {
+          code: 404,
+          description: 'User not found!',
+        },
       })
     }
 
     res.status(200).json({
       success: true,
-      message: 'Orders add successfully',
-      data: addedResult,
+      message: 'Order created successfully!',
+      data: null,
     })
   } catch (error) {
     res.status(500).json({
       success: false,
       message: 'Something is wrong to add orders',
-      data: error,
+      error,
     })
   }
 }
@@ -213,16 +236,19 @@ const getAllOrders = async (req: Request, res: Response) => {
     const orders = orderResponse?.orders || []
 
     if (!orders || orders.length === 0) {
-      return res.status(500).json({
+      return res.status(404).json({
         success: false,
-        message: 'User does not have any orders',
-        data: null,
+        message: 'User not found',
+        error: {
+          code: 404,
+          description: 'User not found!',
+        },
       })
     }
 
     res.status(200).json({
       success: true,
-      message: 'Orders get successfully',
+      message: 'Order fetched successfully!',
       data: orders,
     })
   } catch (error) {
@@ -244,23 +270,26 @@ const calculateTotalPrice = async (req: Request, res: Response) => {
     )
 
     if (!price) {
-      return res.status(500).json({
+      return res.status(404).json({
         success: false,
-        message: 'User does not have any orders to calculate the total price',
-        data: null,
+        message: 'User not found',
+        error: {
+          code: 404,
+          description: 'User not found!',
+        },
       })
     }
 
     res.status(200).json({
       success: true,
       message: 'Total price calculated successfully!',
-      data: price,
+      data: { totalPrice: price },
     })
   } catch (error) {
     res.status(500).json({
       success: false,
       message: 'Something is wrong to calculate the price',
-      data: error,
+      error,
     })
   }
 }

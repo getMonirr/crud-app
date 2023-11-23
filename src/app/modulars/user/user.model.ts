@@ -76,8 +76,8 @@ userSchema.methods.isUserExists = async function (userName: string) {
 }
 
 // static methods for check user existence
-userSchema.static('createIsUserExists', async function (userName: string) {
-  return await User.findOne({ username: userName })
+userSchema.static('createIsUserExists', async function (userId: number) {
+  return await User.findOne({ userId })
 })
 
 // remove password in response

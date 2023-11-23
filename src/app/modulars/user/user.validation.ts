@@ -11,7 +11,7 @@ const addressValidationSchema = z.object({
   country: z.string().min(1).max(30),
 })
 
-const orderValidationSchema = z.object({
+export const orderValidationSchema = z.object({
   productName: z.string(),
   quantity: z.number(),
   price: z.number(),
