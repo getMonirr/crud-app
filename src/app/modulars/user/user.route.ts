@@ -1,8 +1,21 @@
 import express from 'express'
+import { userController } from './user.controller'
 
-const router = express.Router()
+const userRouter = express.Router()
 
 // user routes
-router.post('/')
+userRouter.post('/', userController.createUser)
+userRouter.get('/', userController.getAllUsers)
+userRouter.get('/:userId', userController.getUser)
+userRouter.put('/:userId', userController.updateUser)
+userRouter.delete('/:userId', userController.deleteUser)
 
-export default router
+// orders
+userRouter.put('/:userId/orders', userController.addProductInOrder)
+userRouter.get('/:userId/orders', userController.getAllOrders)
+userRouter.get(
+  '/:userId/orders/total-price',
+  userController.calculateTotalPrice,
+)
+
+export default userRouter
