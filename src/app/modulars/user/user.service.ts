@@ -82,12 +82,11 @@ const getAllOrders = async (
 }
 
 // calculate total price
-const calculateTotalPrice = async (userId: number): Promise<number> => {
+const calculateTotalPrice = async (userId: number): Promise<number | null> => {
   const isUserExist = await User.createIsUserExists(userId)
 
   if (!isUserExist) {
-    // TODO: think about the response for user does not exist
-    return 0
+    return null
   }
   const calculateResult = await User.aggregate([
     { $match: { userId } },

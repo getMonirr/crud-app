@@ -76,8 +76,7 @@ const getAllOrders = (userId) => __awaiter(void 0, void 0, void 0, function* () 
 const calculateTotalPrice = (userId) => __awaiter(void 0, void 0, void 0, function* () {
     const isUserExist = yield user_model_1.default.createIsUserExists(userId);
     if (!isUserExist) {
-        // TODO: think about the response for user does not exist
-        return 0;
+        return null;
     }
     const calculateResult = yield user_model_1.default.aggregate([
         { $match: { userId } },

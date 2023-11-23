@@ -30,7 +30,7 @@ const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         }
         res.status(200).json({
             success: true,
-            message: 'User is created successfully',
+            message: 'User created successfully!',
             data: result,
         });
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -61,14 +61,14 @@ const getAllUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         }
         res.status(200).json({
             success: true,
-            message: 'User found successfully',
+            message: 'Users fetched successfully!',
             data: users,
         });
     }
     catch (error) {
         res.status(500).json({
             success: false,
-            message: 'Something is wrong to found users',
+            message: error.message || 'Something is wrong to found users',
             error,
         });
     }
@@ -91,14 +91,14 @@ const getUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         }
         res.status(200).json({
             success: true,
-            message: 'User found successfully',
+            message: 'Users fetched successfully!',
             data: user,
         });
     }
     catch (error) {
         res.status(500).json({
             success: false,
-            message: 'Something is wrong to found user',
+            message: error.message || 'Something is wrong to found user',
             error,
         });
     }
@@ -124,14 +124,14 @@ const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         }
         res.status(200).json({
             success: true,
-            message: 'User update successfully',
+            message: 'User updated successfully!',
             data: updatedResult,
         });
     }
     catch (error) {
         res.status(500).json({
             success: false,
-            message: 'Something is wrong to update user information',
+            message: error.message || 'Something is wrong to update user information',
             error,
         });
     }
@@ -161,7 +161,7 @@ const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     catch (error) {
         res.status(500).json({
             success: false,
-            message: 'Something is wrong to delete a user',
+            message: error.message || 'Something is wrong to delete a user',
             error,
         });
     }
@@ -196,7 +196,7 @@ const addOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     catch (error) {
         res.status(500).json({
             success: false,
-            message: 'Something is wrong to add orders',
+            message: error.message || 'Something is wrong to add orders',
             error,
         });
     }
@@ -227,7 +227,7 @@ const getAllOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     catch (error) {
         res.status(500).json({
             success: false,
-            message: 'Something is wrong to get orders',
+            message: error.message || 'Something is wrong to get orders',
             data: error,
         });
     }
@@ -257,7 +257,7 @@ const calculateTotalPrice = (req, res) => __awaiter(void 0, void 0, void 0, func
     catch (error) {
         res.status(500).json({
             success: false,
-            message: 'Something is wrong to calculate the price',
+            message: error.message || 'Something is wrong to calculate the price',
             error,
         });
     }

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { IUser } from './user.interface'
 import { Request, Response } from 'express'
 import {
@@ -29,7 +30,7 @@ const createUser = async (req: Request, res: Response) => {
 
     res.status(200).json({
       success: true,
-      message: 'User is created successfully',
+      message: 'User created successfully!',
       data: result,
     })
 
@@ -63,13 +64,13 @@ const getAllUsers = async (req: Request, res: Response) => {
 
     res.status(200).json({
       success: true,
-      message: 'User found successfully',
+      message: 'Users fetched successfully!',
       data: users,
     })
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).json({
       success: false,
-      message: 'Something is wrong to found users',
+      message: error.message || 'Something is wrong to found users',
       error,
     })
   }
@@ -95,13 +96,13 @@ const getUser = async (req: Request, res: Response) => {
 
     res.status(200).json({
       success: true,
-      message: 'User found successfully',
+      message: 'Users fetched successfully!',
       data: user,
     })
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).json({
       success: false,
-      message: 'Something is wrong to found user',
+      message: error.message || 'Something is wrong to found user',
       error,
     })
   }
@@ -136,13 +137,13 @@ const updateUser = async (req: Request, res: Response) => {
 
     res.status(200).json({
       success: true,
-      message: 'User update successfully',
+      message: 'User updated successfully!',
       data: updatedResult,
     })
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).json({
       success: false,
-      message: 'Something is wrong to update user information',
+      message: error.message || 'Something is wrong to update user information',
       error,
     })
   }
@@ -173,10 +174,10 @@ const deleteUser = async (req: Request, res: Response) => {
       message: 'User deleted successfully!',
       data: null,
     })
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).json({
       success: false,
-      message: 'Something is wrong to delete a user',
+      message: error.message || 'Something is wrong to delete a user',
       error,
     })
   }
@@ -216,10 +217,10 @@ const addOrder = async (req: Request, res: Response) => {
       message: 'Order created successfully!',
       data: null,
     })
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).json({
       success: false,
-      message: 'Something is wrong to add orders',
+      message: error.message || 'Something is wrong to add orders',
       error,
     })
   }
@@ -251,10 +252,10 @@ const getAllOrders = async (req: Request, res: Response) => {
       message: 'Order fetched successfully!',
       data: orders,
     })
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).json({
       success: false,
-      message: 'Something is wrong to get orders',
+      message: error.message || 'Something is wrong to get orders',
       data: error,
     })
   }
@@ -285,10 +286,10 @@ const calculateTotalPrice = async (req: Request, res: Response) => {
       message: 'Total price calculated successfully!',
       data: { totalPrice: price },
     })
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).json({
       success: false,
-      message: 'Something is wrong to calculate the price',
+      message: error.message || 'Something is wrong to calculate the price',
       error,
     })
   }
