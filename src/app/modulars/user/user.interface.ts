@@ -18,8 +18,8 @@ export interface IOrder {
 }
 
 export interface IUser {
-  userId: string
-  userName: string
+  userId: number
+  username: string
   password: string
   fullName: IFullName
   age: number

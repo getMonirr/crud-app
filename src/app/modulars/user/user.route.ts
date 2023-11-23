@@ -10,8 +10,8 @@ userRouter.get('/:userId', userController.getUser)
 userRouter.put('/:userId', userController.updateUser)
 userRouter.delete('/:userId', userController.deleteUser)
 
-// orders
-userRouter.put('/:userId/orders', userController.addProductInOrder)
+// // orders
+userRouter.put('/:userId/orders', userController.addOrder)
 userRouter.get('/:userId/orders', userController.getAllOrders)
 userRouter.get(
   '/:userId/orders/total-price',

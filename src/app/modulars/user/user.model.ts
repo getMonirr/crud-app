@@ -33,11 +33,11 @@ const orderSchema = new mongoose.Schema<IOrder>({
 // user schema
 const userSchema = new mongoose.Schema<IUser, UserModel, IUserMethods>({
   userId: {
-    type: String,
+    type: Number,
     required: true,
     unique: true,
   },
-  userName: {
+  username: {
     type: String,
     required: true,
     unique: true,
@@ -67,19 +67,19 @@ const userSchema = new mongoose.Schema<IUser, UserModel, IUserMethods>({
     type: addressSchema,
     required: true,
   },
-  orders: orderSchema,
+  orders: [orderSchema],
 })
 
 // instance methods for check user existence
 userSchema.methods.isUserExist = async function (userName: string) {
-  return await User.findOne({ userName })
+  return await User.findOne({ username: userName })
 }
 
 // password hashed
 userSchema.pre('save', async function (next) {
   const hashedPassword = await bcrypt.hash(
     this.password,
-    config.salt_round as string,
+    Number(config.salt_round),
   )
   this.password = hashedPassword
   next()

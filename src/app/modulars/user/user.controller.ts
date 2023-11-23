@@ -1,9 +1,42 @@
 import { NextFunction, Request, Response } from 'express'
+import { userValidationSchema } from './user.validation'
+import { userServices } from './user.service'
 
 //* *********
 // create a new user
 //********* */
-const createUser = async (req: Request, res: Response, next: NextFunction) => {}
+const createUser = async (req: Request, res: Response) => {
+  try {
+    const userData = req.body
+
+    const validatedData = userValidationSchema.parse(userData)
+    console.log(validatedData)
+
+    const result = await userServices.createUser(validatedData)
+
+    if (!result) {
+      return res.status(500).json({
+        success: false,
+        message: 'User creation failed',
+        data: result,
+      })
+    }
+
+    res.status(200).json({
+      success: true,
+      message: 'User is created successfully',
+      data: result,
+    })
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message || 'something went wrong',
+      error: error,
+    })
+  }
+}
 
 //* *********
 // get All users
