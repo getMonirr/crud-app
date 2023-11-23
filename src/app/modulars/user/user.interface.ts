@@ -20,7 +20,7 @@ export interface IOrder {
 export interface IUser {
   userId: number
   username: string
-  password: string
+  password?: string
   fullName: IFullName
   age: number
   email: string

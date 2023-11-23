@@ -75,10 +75,17 @@ userSchema.methods.isUserExist = async function (userName: string) {
   return await User.findOne({ username: userName })
 }
 
+// remove password in response
+userSchema.methods.toJSON = function () {
+  const obj = this.toObject()
+  delete obj.password
+  return obj
+}
+
 // password hashed
 userSchema.pre('save', async function (next) {
   const hashedPassword = await bcrypt.hash(
-    this.password,
+    this.password as string,
     Number(config.salt_round),
   )
   this.password = hashedPassword
