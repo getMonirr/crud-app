@@ -250,7 +250,7 @@ const getAllOrders = async (req: Request, res: Response) => {
     res.status(200).json({
       success: true,
       message: 'Order fetched successfully!',
-      data: orders,
+      data: { orders },
     })
   } catch (error: any) {
     res.status(500).json({

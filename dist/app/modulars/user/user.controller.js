@@ -221,7 +221,7 @@ const getAllOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         res.status(200).json({
             success: true,
             message: 'Order fetched successfully!',
-            data: orders,
+            data: { orders },
         });
     }
     catch (error) {

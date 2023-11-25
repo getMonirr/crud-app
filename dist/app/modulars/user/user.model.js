@@ -83,10 +83,16 @@ userSchema.static('createIsUserExists', function (userId) {
         return yield User.findOne({ userId });
     });
 });
-// remove password in response
+// remove password, _id in response
 userSchema.methods.toJSON = function () {
+    var _a, _b;
     const obj = this.toObject();
-    delete obj.password;
+    obj === null || obj === void 0 ? true : delete obj.password;
+    obj === null || obj === void 0 ? true : delete obj._id;
+    (_a = obj === null || obj === void 0 ? void 0 : obj.fullName) === null || _a === void 0 ? true : delete _a._id;
+    (_b = obj === null || obj === void 0 ? void 0 : obj.address) === null || _b === void 0 ? true : delete _b._id;
+    obj === null || obj === void 0 ? true : delete obj.__v;
+    obj === null || obj === void 0 ? true : delete obj.orders;
     return obj;
 };
 // password hashed

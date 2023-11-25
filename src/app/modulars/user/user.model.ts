@@ -80,10 +80,15 @@ userSchema.static('createIsUserExists', async function (userId: number) {
   return await User.findOne({ userId })
 })
 
-// remove password in response
+// remove password, _id in response
 userSchema.methods.toJSON = function () {
   const obj = this.toObject()
-  delete obj.password
+  delete obj?.password
+  delete obj?._id
+  delete obj?.fullName?._id
+  delete obj?.address?._id
+  delete obj?.__v
+  delete obj?.orders
   return obj
 }
 
